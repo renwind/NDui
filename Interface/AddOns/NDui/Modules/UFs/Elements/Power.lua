@@ -2,7 +2,7 @@ local _, ns = ...
 local B, C, L, DB = unpack(ns)
 
 local oUF = ns.oUF
-local UF = B:RegisterModule("UnitFrames")
+local UF = B:GetModule("UnitFrames")
 
 -- PowerBar
 function UF:UpdatePowerColorByIndex(power, index)
