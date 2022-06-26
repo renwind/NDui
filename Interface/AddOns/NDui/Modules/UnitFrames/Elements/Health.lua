@@ -191,7 +191,7 @@ function UF:HealthText_Config(self)
 	local hpval = self.healthText
 	if not hpval then return end
 
-	hpval:SetFont(DB.Font[1], self.db.healthTextSize, DB.Font[3])
+	B.SetFontSize(hpval, self.db.healthTextSize)
 	hpval:SetJustifyH(self.db.healthJustifyH)
 	hpval:ClearAllPoints()
 	hpval:SetPoint(self.db.healthTextAnchor, self.db.healthTextXOffset, self.db.healthTextYOffset)

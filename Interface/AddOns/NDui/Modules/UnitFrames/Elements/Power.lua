@@ -112,7 +112,7 @@ function UF:PowerText_Config(self)
 	local ppval = self.powerText
 	if not ppval then return end
 
-	ppval:SetFont(DB.Font[1], self.db.powerTextSize, DB.Font[3])
+	B.SetFontSize(ppval, self.db.powerTextSize)
 	ppval:SetJustifyH(self.db.powerJustifyH)
 	ppval:ClearAllPoints()
 	ppval:SetPoint(self.db.powerTextAnchor, self.db.powerTextXOffset, self.db.powertextYOffset)
