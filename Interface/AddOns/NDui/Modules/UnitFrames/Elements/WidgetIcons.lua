@@ -48,8 +48,9 @@ function UF:GroupRole_Config(self)
 	local icon = self.GroupRoleIndicator
 	if not icon then return end
 
-	icon:SetPoint(self.db.roleAnchor, self, self.db.roleXOffset, self.db.roleYOffset)
-	icon:SetSize(self.db.roleSize, self.db.roleSize)
+	local db = self.db.grouprole
+	icon:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	icon:SetSize(db.size, db.size)
 end
 
 function UF:CreateGroupRole(self)
@@ -66,12 +67,13 @@ function UF:LeaderIcon_Config(self)
 	local leader = self.LeaderIndicator
 	if not leader then return end
 
-	leader:SetPoint(self.db.leaderAnchor, self, self.db.leaderXOffset, self.db.leaderYOffset)
-	leader:SetSize(self.db.leaderSize, self.db.leaderSize)
+	local db = self.db.leaders
+	leader:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	leader:SetSize(db.size, db.size)
 
 	local assist = self.AssistantIndicator
-	assist:SetPoint(self.db.leaderAnchor, self, self.db.leaderXOffset, self.db.leaderYOffset)
-	assist:SetSize(self.db.leaderSize, self.db.leaderSize)
+	assist:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	assist:SetSize(db.size, db.size)
 end
 
 function UF:CreateLeaderIcon(self)
@@ -91,8 +93,9 @@ function UF:PhaseIcon_Config(self)
 	local phase = self.PhaseIndicator
 	if not phase then return end
 
-	phase:SetPoint(self.db.phaseAnchor, self.Health, self.db.phaseXOffset, self.db.phaseYOffset)
-	phase:SetSize(self.db.phaseSize, self.db.phaseSize)
+	local db = self.db.phase
+	phase:SetPoint(db.anchor, self.Health, db.xOffset, db.yOffset)
+	phase:SetSize(db.size, db.size)
 end
 
 function UF:CreatePhaseIcon()
@@ -113,8 +116,9 @@ function UF:CombatIcon_Config(self)
 	local combat = self.CombatIndicator
 	if not combat then return end
 
-	combat:SetPoint(self.db.combatAnchor, self.Health, self.db.combatXOffset, self.db.combatYOffset)
-	combat:SetSize(self.db.combatSize, self.db.combatSize)
+	local db = self.db.combat
+	combat:SetPoint(db.anchor, self.Health, db.xOffset, db.yOffset)
+	combat:SetSize(db.size, db.size)
 end
 
 function UF:CreateCombatIcon(self)
@@ -122,6 +126,7 @@ function UF:CreateCombatIcon(self)
 	combat:SetPoint("BOTTOMLEFT", self)
 	combat:SetSize(28, 28)
 	combat:SetAtlas(DB.objectTex)
+
 	self.CombatIndicator = combat
 end
 
@@ -130,8 +135,9 @@ function UF:RestingIcon_Config(self)
 	local rest = self.RestingIndicator
 	if not rest then return end
 
-	rest:SetPoint(self.db.restingAnchor, self, self.db.restingXOffset, self.db.restingYOffset)
-	rest:SetSize(self.db.restingSize, self.db.restingSize)
+	local db = self.db.resting
+	rest:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	rest:SetSize(db.size, db.size)
 end
 
 function UF:CreateRestingIcon(self)
@@ -142,6 +148,7 @@ function UF:CreateRestingIcon(self)
 	rest:SetTexCoord(.445, .55, .648, .905)
 	rest:SetVertexColor(.6, .8, 1)
 	rest:SetAlpha(.7)
+
 	self.RestingIndicator = rest
 end
 
@@ -150,14 +157,16 @@ function UF:QuestIcon_Config(self)
 	local quest = self.QuestIndicator
 	if not quest then return end
 
-	quest:SetPoint(self.db.questAnchor, self, self.db.questXOffset, self.db.questYOffset)
-	quest:SetSize(self.db.questSize, self.db.questSize)
+	local db = self.db.quest
+	quest:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	quest:SetSize(db.size, db.size)
 end
 
 function UF:CreateQuestIcon(self)
 	local quest = self:CreateTexture(nil, "OVERLAY")
 	quest:SetPoint("TOPLEFT", self, 0, 8)
 	quest:SetSize(16, 16)
+
 	self.QuestIndicator = quest
 end
 
@@ -166,14 +175,16 @@ function UF:RaidTarget_Config(self)
 	local raidTarget = self.RaidTargetIndicator
 	if not raidTarget then return end
 
-	raidTarget:SetPoint(self.db.raidTargetAnchor, self, self.db.raidTargetXOffset, self.db.raidTargetYOffset)
-	raidTarget:SetSize(self.db.raidTargetSize, self.db.raidTargetSize)
+	local db = self.db.raidtarget
+	raidTarget:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	raidTarget:SetSize(db.size, db.size)
 end
 
 function UF:CreateRaidTarget(self)
 	local raidTarget = self:CreateTexture(nil, "OVERLAY")
 	raidTarget:SetPoint("TOPLEFT", self, 0, 10)
 	raidTarget:SetSize(12, 12)
+
 	self.RaidTargetIndicator = raidTarget
 end
 
@@ -182,8 +193,9 @@ function UF:PVPClassify_Config()
 	local pvpClassify = self.PvPClassificationIndicator
 	if not pvpClassify then return end
 
-	pvpClassify:SetPoint(self.db.pvpClassifyAnchor, self, self.db.pvpClassifyXOffset, self.db.pvpClassifyYOffset)
-	pvpClassify:SetSize(self.db.pvpClassifySize, self.db.pvpClassifySize)
+	local db = self.db.pvpclassify
+	pvpClassify:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	pvpClassify:SetSize(db.size, db.size)
 end
 
 function UF:CreatePVPClassify(self)
@@ -199,8 +211,9 @@ function UF:QuestSync_Config(self)
 	local sync = self.QuestSyncIndicator
 	if not sync then return end
 
-	sync:SetPoint(self.db.syncAnchor, self, self.db.syncXOffset, self.db.syncYOffset)
-	sync:SetSize(self.db.syncSize, self.db.syncSize)
+	local db = self.db.sync
+	sync:SetPoint(db.anchor, self, db.xOffset, db.yOffset)
+	sync:SetSize(db.size, db.size)
 end
 
 function UF:QuestSync_Update()
