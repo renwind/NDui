@@ -1,7 +1,5 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
-
-local oUF = ns.oUF
 local UF = B:GetModule("UnitFrames")
 
 function UF:CreatePrediction(self)

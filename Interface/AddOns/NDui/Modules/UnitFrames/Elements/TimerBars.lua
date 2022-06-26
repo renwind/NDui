@@ -1,7 +1,5 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
-
-local oUF = ns.oUF
 local UF = B:GetModule("UnitFrames")
 
 -- TODO: move the mirrorbar and time tracker into SKINS
