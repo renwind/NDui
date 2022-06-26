@@ -37,31 +37,6 @@ function UF:CreateHeader(self, onKeyDown)
 	self:HookScript("OnLeave", UF.UnitFrame_OnLeave)
 end
 
--- Portrait
-function UF:Portrait_Config(self)
-	local portrait = self.Portrait
-	if not portrait then return end
-
-	portrait:SetAlpha(self.db.portraitAlpha)
-end
-
-function UF:CreatePortrait(self)
-	if not C.db["UFs"]["Portrait"] then return end
-
-	local portrait = CreateFrame("PlayerModel", nil, self.Health)
-	portrait:SetInside()
-	portrait:SetAlpha(.2)
-	self.Portrait = portrait
-
-	local healthBg = self.Health and self.Health.bg
-	if healthBg then
-		healthBg:ClearAllPoints()
-		healthBg:SetPoint("BOTTOMLEFT", self.Health:GetStatusBarTexture(), "BOTTOMRIGHT", 0, 0)
-		healthBg:SetPoint("TOPRIGHT", self.Health)
-		healthBg:SetParent(self)
-	end
-end
-
 -- GroupRoleIndicator
 function UF.GroupRole_PostUpdate(element, role)
 	if element:IsShown() then
@@ -301,65 +276,4 @@ function UF:DemonicGatewayIcon(self)
 	self.DemonicGatewayIndicator = icon
 	self.DemonicGatewayIndicator.updater = updater
 	B:RegisterEvent("PLAYER_FOCUS_CHANGED", DGI_Visibility)
-end
-
--- Experience and Reputation bar
-function UF:CreateExpRepBar(self)
-	local bar = CreateFrame("StatusBar", nil, self)
-	bar:SetPoint("TOPLEFT", self, "TOPRIGHT", 5, 0)
-	bar:SetPoint("BOTTOMRIGHT", self.Power, "BOTTOMRIGHT", 10, 0)
-	bar:SetOrientation("VERTICAL")
-	B.CreateSB(bar)
-
-	local rest = CreateFrame("StatusBar", nil, bar)
-	rest:SetAllPoints(bar)
-	rest:SetStatusBarTexture(DB.normTex)
-	rest:SetStatusBarColor(0, .4, 1, .6)
-	rest:SetFrameLevel(bar:GetFrameLevel() - 1)
-	rest:SetOrientation("VERTICAL")
-	bar.restBar = rest
-
-	B:GetModule("Misc"):SetupScript(bar)
-end
-
--- TODO: move the mirrorbar and time tracker into SKINS
-local function reskinTimerBar(bar)
-	bar:SetSize(280, 15)
-	B.StripTextures(bar)
-
-	local statusbar = _G[bar:GetName().."StatusBar"]
-	if statusbar then
-		statusbar:SetAllPoints()
-		statusbar:SetStatusBarTexture(DB.normTex)
-	else
-		bar:SetStatusBarTexture(DB.normTex)
-	end
-
-	B.SetBD(bar)
-end
-
-function UF:ReskinMirrorBars()
-	local previous
-	for i = 1, 3 do
-		local bar = _G["MirrorTimer"..i]
-		reskinTimerBar(bar)
-
-		if previous then
-			bar:SetPoint("TOP", previous, "BOTTOM", 0, -5)
-		end
-		previous = bar
-	end
-end
-
-function UF:ReskinTimerTrakcer(self)
-	local function updateTimerTracker()
-		for _, timer in pairs(TimerTracker.timerList) do
-			if timer.bar and not timer.bar.styled then
-				reskinTimerBar(timer.bar)
-
-				timer.bar.styled = true
-			end
-		end
-	end
-	self:RegisterEvent("START_TIMER", updateTimerTracker, true)
 end
