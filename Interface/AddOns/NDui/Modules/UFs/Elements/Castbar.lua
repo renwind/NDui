@@ -69,6 +69,14 @@ function UF:OnCastbarUpdate(elapsed)
 				self.Time:SetFormattedText(decimal.." | "..decimal, duration, self.casting and self.max + self.delay or self.max - self.delay)
 			end
 		end
+
+
+		-- modified by renwind
+		if self.__owner.unit == "focus" then
+			local totalTime = self.casting and self.max + self.delay or self.max
+			self.Time:SetFormattedText("|cffffff00%.1f", totalTime - duration)
+		end
+
 		self.duration = duration
 		self:SetValue(duration)
 		self.Spark:SetPoint("CENTER", self, "LEFT", (duration / self.max) * self:GetWidth(), 0)

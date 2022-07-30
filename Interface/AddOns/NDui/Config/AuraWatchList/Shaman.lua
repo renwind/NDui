@@ -31,6 +31,8 @@ local list = {
 		{AuraID = 334168, UnitID = "target", Caster = "player"},	-- 鞭笞烈焰
 	},
 	["Special Aura"] = {	-- 玩家重要光环组
+		{AuraID = 307159, UnitID = "player"},	-- 幽魂敏捷药水
+		{AuraID = 307162, UnitID = "player"},	-- 幽魂智力药水
 		{AuraID = 73920, UnitID = "player"},	-- 治疗之雨
 		{AuraID = 53390, UnitID = "player"},	-- 潮汐奔涌
 		{AuraID = 79206, UnitID = "player"},	-- 灵魂行者的恩赐
@@ -50,12 +52,12 @@ local list = {
 		{AuraID = 201846, UnitID = "player"},	-- 风暴使者
 		{AuraID = 199055, UnitID = "player"},	-- 毁灭释放
 		{AuraID = 201898, UnitID = "player"},	-- 风歌
-		{AuraID = 215785, UnitID = "player"},	-- 灼热之手
+		-- {AuraID = 215785, UnitID = "player"},	-- 灼热之手
 		{AuraID = 191877, UnitID = "player"},	-- 漩涡之力
 		{AuraID = 205495, UnitID = "player"},	-- 风暴守护者
-		{AuraID = 118522, UnitID = "player"},	-- 元素冲击 爆击
-		{AuraID = 173183, UnitID = "player"},	-- 元素冲击 急速
-		{AuraID = 173184, UnitID = "player"},	-- 元素冲击 精通
+		-- {AuraID = 118522, UnitID = "player"},	-- 元素冲击 爆击
+		-- {AuraID = 173183, UnitID = "player"},	-- 元素冲击 急速
+		-- {AuraID = 173184, UnitID = "player"},	-- 元素冲击 精通
 		{AuraID = 210714, UnitID = "player"},	-- 冰怒
 		{AuraID = 157504, UnitID = "player", Value = true},	-- 暴雨图腾
 		{AuraID = 280615, UnitID = "player"},	-- 迅捷洪流
@@ -63,15 +65,20 @@ local list = {
 		{AuraID = 272737, UnitID = "player"},	-- 无穷力量
 		{AuraID = 263806, UnitID = "player"},	-- 呼啸狂风
 		{AuraID = 191634, UnitID = "player"},	-- 风暴守护者
-		{AuraID = 202004, UnitID = "player"},	-- 山崩
-		{AuraID = 262652, UnitID = "player"},	-- 强风
-		{AuraID = 224125, UnitID = "player"},	-- 火
-		{AuraID = 224126, UnitID = "player"},	-- 冰
-		{AuraID = 224127, UnitID = "player"},	-- 电
-		{AuraID = 187878, UnitID = "player"},	-- 毁灭闪电
+		-- {AuraID = 202004, UnitID = "player"},	-- 山崩
+		-- {AuraID = 262652, UnitID = "player"},	-- 强风
+		-- {AuraID = 224125, UnitID = "player"},	-- 火
+		-- {AuraID = 224126, UnitID = "player"},	-- 冰
+		-- {AuraID = 224127, UnitID = "player"},	-- 电
+		-- {AuraID = 187878, UnitID = "player"},	-- 毁灭闪电
 		{AuraID = 288675, UnitID = "player"},	-- 浪潮汹涌
 		{AuraID = 320125, UnitID = "player"},	-- 回响震击
-		{AuraID = 344179, UnitID = "player", Combat = true},	-- 漩涡武器
+		-- {AuraID = 354648, UnitID = "player", Value=true},   	-- 碎裂元素
+		-- {AuraID = 344179, UnitID = "player", Text="预留"},		-- 漩涡武器
+		-- {AuraID = 344179, UnitID = "player", Combat = true},	-- 漩涡武器
+	},
+	["InternalCD"] = { -- 自定义内置冷却组
+		{IntID = 344179, Duration = 20},	-- 漩涡武器
 	},
 	["Focus Aura"] = {		-- 焦点光环组
 		{AuraID = 51514, UnitID = "focus", Caster = "player"},	-- 妖术
@@ -81,15 +88,24 @@ local list = {
 		{AuraID = 211015, UnitID = "focus", Caster = "player"},	-- 妖术
 	},
 	["Spell Cooldown"] = {	-- 冷却计时组
+		-- 披风
+		{SlotID = 6},		-- 腰带
 		{SlotID = 13},		-- 饰品1
 		{SlotID = 14},		-- 饰品2
+		{SpellID = 8143},	-- 战栗图腾
+		{SpellID = 192058},	-- 电能图腾
+		{SpellID = 2484},	-- 地缚图腾
+		{SpellID = 51514},	-- 妖术
+		{SpellID = 69070},	-- 火箭跳
+		{SpellID = 108271},	-- 星界转移
 		{SpellID = 20608},	-- 复生
 		{SpellID = 98008},	-- 灵魂链接
 		{SpellID = 114050},	-- 升腾 元素
 		{SpellID = 114051},	-- 升腾 增强
 		{SpellID = 114052},	-- 升腾 恢复
 		{SpellID = 108280},	-- 治疗之潮
-		{SpellID = 198506},	-- 野性狼魂
+		-- {SpellID = 51533},	-- 野性狼魂
+		-- {SpellID = 198506},	-- 野性狼魂
 	},
 }
 

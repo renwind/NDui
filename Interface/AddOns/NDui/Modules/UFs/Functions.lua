@@ -618,7 +618,18 @@ function UF:CreateCastBar(self)
 	if mystyle ~= "boss" and mystyle ~= "arena" then
 		cb.Icon = cb:CreateTexture(nil, "ARTWORK")
 		cb.Icon:SetSize(cb:GetHeight(), cb:GetHeight())
-		cb.Icon:SetPoint("BOTTOMRIGHT", cb, "BOTTOMLEFT", -3, 0)
+		-- modified by renwind
+		if mystyle=="focus" then
+			cb.Icon:SetPoint("BOTTOMLEFT", cb, "BOTTOMRIGHT", 3, 0)
+			name:SetPoint("RIGHT", cb, "RIGHT", 0, 0)
+			name:SetJustifyH("RIGHT")
+			B.SetFontSize(name, 16)
+			-- timer:SetPoint("LEFT", cb, "LEFT", 36, 0)
+			timer:SetPoint("BOTTOMRIGHT", cb, "TOPRIGHT", 6, 0)
+			B.SetFontSize(timer, 20)
+		else
+			cb.Icon:SetPoint("BOTTOMRIGHT", cb, "BOTTOMLEFT", -3, 0)
+		end
 		cb.Icon:SetTexCoord(unpack(DB.TexCoord))
 		B.SetBD(cb.Icon)
 	end
@@ -1121,10 +1132,15 @@ function UF:CreateBuffs(self)
 	bu.spacing = 3
 
 	if self.mystyle == "raid" then
-		bu.initialAnchor = "BOTTOMRIGHT"
-		bu["growth-x"] = "LEFT"
+		-- renwind modified: buff set to bottom left
+		bu.initialAnchor = "BOTTOMLEFT"
+		bu["growth-x"] = "RIGHT"
 		bu:ClearAllPoints()
-		bu:SetPoint("BOTTOMRIGHT", self.Health, -C.mult, C.mult)
+		bu:SetPoint("BOTTOMLEFT", self.Health, C.mult, C.mult)
+		-- bu.initialAnchor = "BOTTOMRIGHT"
+		-- bu["growth-x"] = "LEFT"
+		-- bu:ClearAllPoints()
+		-- bu:SetPoint("BOTTOMRIGHT", self.Health, -C.mult, C.mult)
 		bu.num = (self.raidType == "simple" or not C.db["UFs"]["ShowRaidBuff"]) and 0 or 3
 		bu.size = C.db["UFs"]["RaidBuffSize"]
 		bu.CustomFilter = UF.RaidBuffFilter
@@ -1154,9 +1170,14 @@ function UF:CreateDebuffs(self)
 	bu.tooltipAnchor = "ANCHOR_BOTTOMLEFT"
 	bu.showDebuffType = true
 	if mystyle == "raid" then
-		bu.initialAnchor = "BOTTOMLEFT"
-		bu["growth-x"] = "RIGHT"
-		bu:SetPoint("BOTTOMLEFT", self.Health, C.mult, C.mult)
+		-- renwind modified: Debuff set to bottom right
+		bu.initialAnchor = "BOTTOMRIGHT"
+		bu["growth-x"] = "LEFT"
+		bu:ClearAllPoints()
+		bu:SetPoint("BOTTOMRIGHT", self.Health, -C.mult, C.mult)	
+		-- bu.initialAnchor = "BOTTOMLEFT"
+		-- bu["growth-x"] = "RIGHT"
+		-- bu:SetPoint("BOTTOMLEFT", self.Health, C.mult, C.mult)
 		bu.num = (self.raidType == "simple" or not C.db["UFs"]["ShowRaidDebuff"]) and 0 or 3
 		bu.size = C.db["UFs"]["RaidDebuffSize"]
 		bu.CustomFilter = UF.RaidDebuffFilter
