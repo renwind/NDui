@@ -89,7 +89,7 @@ local list = {
 		{AuraID = 357185, UnitID = "player"},	-- 忠诚的力量，低语威能碎片
 		{AuraID = 357773, UnitID = "player"},	-- 神圣使命，九武神长柄
 
-		{AuraID = 367241, UnitID = "player"},	-- 原初印记
+		-- {AuraID = 367241, UnitID = "player"},	-- 原初印记
 		{AuraID = 363522, UnitID = "player"},	-- 角斗士的永恒结界
 		{AuraID = 362699, UnitID = "player"},	-- 角斗士的决心
 		{AuraID = 345231, UnitID = "player"},	-- 角斗士的纹章

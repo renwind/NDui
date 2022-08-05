@@ -125,7 +125,9 @@ function A:InitReminder()
 	if C.db["Auras"]["Reminder"] then
 		if not parentFrame then
 			parentFrame = CreateFrame("Frame", nil, UIParent)
-			parentFrame:SetPoint("CENTER", -220, 130)
+			-- renwind modified
+			parentFrame:SetPoint("CENTER", -290, 456)
+			-- parentFrame:SetPoint("CENTER", -220, 130)
 			parentFrame:SetSize(iconSize, iconSize)
 		end
 		parentFrame:Show()

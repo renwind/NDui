@@ -90,8 +90,8 @@ local list = {
 	["Spell Cooldown"] = {	-- 冷却计时组
 		-- 披风
 		{SlotID = 6},		-- 腰带
-		{SlotID = 13},		-- 饰品1
-		{SlotID = 14},		-- 饰品2
+		-- {SlotID = 13},		-- 饰品1
+		-- {SlotID = 14},		-- 饰品2
 		{SpellID = 8143},	-- 战栗图腾
 		{SpellID = 192058},	-- 电能图腾
 		{SpellID = 2484},	-- 地缚图腾
