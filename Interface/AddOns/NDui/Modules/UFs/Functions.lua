@@ -90,6 +90,8 @@ local function UpdateHealthColorByIndex(health, index)
 	if index == 1 then
 		health:SetStatusBarColor(.1, .1, .1)
 		health.bg:SetVertexColor(.6, .6, .6)
+	elseif index == 4 then
+		health:SetStatusBarColor(0, 0, 0, 0)
 	end
 end
 
@@ -106,6 +108,22 @@ function UF:UpdateHealthBarColor(self, force)
 
 	if force then
 		health:ForceUpdate()
+	end
+end
+
+function UF.HealthPostUpdate(element, _, cur, max)
+	local self = element.__owner
+	local mystyle = self.mystyle
+	local useGradient
+	if mystyle == "PlayerPlate" then
+		-- do nothing
+	elseif mystyle == "raid" then
+		useGradient = C.db["UFs"]["RaidHealthColor"] == 4
+	else
+		useGradient = C.db["UFs"]["HealthColor"] == 4
+	end
+	if useGradient then
+		self.Health.bg:SetVertexColor(self:ColorGradient(cur or 1, max or 1, 1,0,0, 1,.7,0, .7,1,0))
 	end
 end
 
@@ -135,18 +153,25 @@ function UF:CreateHealthBar(self)
 	health:SetStatusBarTexture(DB.normTex)
 	health:SetStatusBarColor(.1, .1, .1)
 	health:SetFrameLevel(self:GetFrameLevel() - 2)
-	health.backdrop = B.SetBD(health, 0) -- don't mess up with libs
-	health.shadow = health.backdrop.__shadow
+
+	self.backdrop = B.SetBD(health, 0)
+	if self.backdrop.__shadow then
+		self.backdrop.__shadow:SetOutside(self, 4+C.mult, 4+C.mult)
+		self.backdrop.__shadow:SetFrameLevel(0)
+		self.backdrop.__shadow = nil
+	end
 	B:SmoothBar(health)
 
-	local bg = health:CreateTexture(nil, "BACKGROUND")
-	bg:SetAllPoints()
+	local bg = self:CreateTexture(nil, "BACKGROUND")
+	bg:SetPoint("TOPLEFT", health:GetStatusBarTexture(), "TOPRIGHT", 0, 0)
+	bg:SetPoint("BOTTOMRIGHT", health)
 	bg:SetTexture(DB.bdTex)
 	bg:SetVertexColor(.6, .6, .6)
 	bg.multiplier = .25
 
 	self.Health = health
 	self.Health.bg = bg
+	self.Health.PostUpdate = UF.HealthPostUpdate
 
 	UF:UpdateHealthBarColor(self)
 end
@@ -360,13 +385,10 @@ function UF:CreatePowerBar(self)
 		powerHeight = retVal(self, C.db["UFs"]["PlayerPowerHeight"], C.db["UFs"]["FocusPowerHeight"], C.db["UFs"]["BossPowerHeight"], C.db["UFs"]["PetPowerHeight"])
 	end
 	power:SetHeight(powerHeight)
+	power.wasHidden = powerHeight == 0
 	power:SetFrameLevel(self:GetFrameLevel() - 2)
 	power.backdrop = B.CreateBDFrame(power, 0)
 	B:SmoothBar(power)
-
-	if self.Health.shadow then
-		self.Health.shadow:SetPoint("BOTTOMRIGHT", power.backdrop, C.mult+3, -C.mult-3)
-	end
 
 	local bg = power:CreateTexture(nil, "BACKGROUND")
 	bg:SetAllPoints()
@@ -378,6 +400,15 @@ function UF:CreatePowerBar(self)
 
 	power.frequentUpdates = frequentUpdateCheck[mystyle]
 	UF:UpdatePowerBarColor(self)
+end
+
+function UF:CheckPowerBars()
+	for _, frame in pairs(oUF.objects) do
+		if frame.Power and frame.Power.wasHidden then
+			frame:DisableElement("Power")
+			if frame.powerText then frame.powerText:Hide() end
+		end
+	end
 end
 
 function UF:UpdateFramePowerTag()
@@ -463,17 +494,23 @@ function UF:UpdateRaidTextScale()
 end
 
 function UF:CreatePortrait(self)
-	if not C.db["UFs"]["Portrait"] then return end
-
 	local portrait = CreateFrame("PlayerModel", nil, self.Health)
-	portrait:SetInside()
+	portrait:SetAllPoints()
 	portrait:SetAlpha(.2)
 	self.Portrait = portrait
+end
 
-	self.Health.bg:ClearAllPoints()
-	self.Health.bg:SetPoint("BOTTOMLEFT", self.Health:GetStatusBarTexture(), "BOTTOMRIGHT", 0, 0)
-	self.Health.bg:SetPoint("TOPRIGHT", self.Health)
-	self.Health.bg:SetParent(self)
+function UF:TogglePortraits()
+	for _, frame in pairs(oUF.objects) do
+		if frame.Portrait then
+			if C.db["UFs"]["Portrait"] and not frame:IsElementEnabled("Portrait") then
+				frame:EnableElement("Portrait")
+				frame.Portrait:ForceUpdate()
+			elseif not C.db["UFs"]["Portrait"] and frame:IsElementEnabled("Portrait") then
+				frame:DisableElement("Portrait")
+			end
+		end
+	end
 end
 
 local function postUpdateRole(element, role)
@@ -777,11 +814,12 @@ local filteredStyle = {
 	["arena"] = true,
 }
 
-local replaceEncryptedIcons = {
+UF.ReplacedSpellIcons = {
 	[368078] = 348567, -- 移速
 	[368079] = 348567, -- 移速
 	[368103] = 648208, -- 急速
 	[368243] = 237538, -- CD
+	[373785] = 236293, -- S4，大魔王伪装
 }
 
 local dispellType = {
@@ -829,7 +867,7 @@ function UF.PostUpdateIcon(element, _, button, _, _, duration, expiration, debuf
 		end
 	end
 
-	local newTexture = replaceEncryptedIcons[button.spellID]
+	local newTexture = UF.ReplacedSpellIcons[button.spellID]
 	if newTexture then
 		button.icon:SetTexture(newTexture)
 	end
@@ -1057,29 +1095,29 @@ function UF:CreateAuras(self)
 	if mystyle == "player" then
 		bu.initialAnchor = "TOPRIGHT"
 		bu["growth-x"] = "LEFT"
-		bu:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", 0, -10)
+		bu:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -10)
 		bu.__value = "Player"
 		UF:ConfigureAuras(bu)
 		bu.CustomFilter = UF.UnitCustomFilter
 	elseif mystyle == "target" then
-		bu:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -10)
+		bu:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -10)
 		bu.__value = "Target"
 		UF:ConfigureAuras(bu)
 		bu.CustomFilter = UF.UnitCustomFilter
 	elseif mystyle == "tot" then
-		bu:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -5)
+		bu:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -5)
 		bu.__value = "ToT"
 		UF:ConfigureAuras(bu)
 		bu.CustomFilter = UF.UnitCustomFilter
 	elseif mystyle == "pet" then
 		bu.initialAnchor = "TOPRIGHT"
 		bu["growth-x"] = "LEFT"
-		bu:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", 0, -5)
+		bu:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -5)
 		bu.__value = "Pet"
 		UF:ConfigureAuras(bu)
 		bu.CustomFilter = UF.UnitCustomFilter
 	elseif mystyle == "focus" then
-		bu:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -10)
+		bu:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -10)
 		bu.numTotal = 23
 		bu.iconsPerRow = 8
 		bu.__value = "Focus"
@@ -1130,6 +1168,7 @@ function UF:CreateBuffs(self)
 	bu["growth-x"] = "RIGHT"
 	bu["growth-y"] = "UP"
 	bu.spacing = 3
+	bu.tooltipAnchor = "ANCHOR_BOTTOMLEFT"
 
 	if self.mystyle == "raid" then
 		-- renwind modified: buff set to bottom left
@@ -1499,8 +1538,8 @@ end
 function UF:CreateAltPower(self)
 	local bar = CreateFrame("StatusBar", nil, self)
 	bar:SetStatusBarTexture(DB.normTex)
-	bar:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -3)
-	bar:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", 0, -3)
+	bar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -3)
+	bar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
 	bar:SetHeight(2)
 	B.SetBD(bar, 0)
 
@@ -1515,7 +1554,7 @@ end
 function UF:CreateExpRepBar(self)
 	local bar = CreateFrame("StatusBar", nil, self)
 	bar:SetPoint("TOPLEFT", self, "TOPRIGHT", 5, 0)
-	bar:SetPoint("BOTTOMRIGHT", self.Power, "BOTTOMRIGHT", 10, 0)
+	bar:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", 10, 0)
 	bar:SetOrientation("VERTICAL")
 	B.CreateSB(bar)
 
@@ -1559,8 +1598,8 @@ function UF:CreatePrediction(self)
 	oag:SetTexture("Interface\\RaidFrame\\Shield-Overshield")
 	oag:SetBlendMode("ADD")
 	oag:SetAlpha(.7)
-	oag:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -5, 2)
-	oag:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -5, -2)
+	oag:SetPoint("TOPLEFT", self.Health, "TOPRIGHT", -7, 2)
+	oag:SetPoint("BOTTOMLEFT", self.Health, "BOTTOMRIGHT", -7, -2)
 
 	local hab = CreateFrame("StatusBar", nil, frame)
 	hab:SetPoint("TOPLEFT", self.Health)
@@ -1607,8 +1646,8 @@ end
 
 function UF:CreateAddPower(self)
 	local bar = CreateFrame("StatusBar", nil, self)
-	bar:SetPoint("TOPLEFT", self.Power, "BOTTOMLEFT", 0, -3)
-	bar:SetPoint("TOPRIGHT", self.Power, "BOTTOMRIGHT", 0, -3)
+	bar:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -3)
+	bar:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -3)
 	bar:SetHeight(4)
 	bar:SetStatusBarTexture(DB.normTex)
 	B.SetBD(bar, 0)

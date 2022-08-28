@@ -924,6 +924,10 @@ local function toggleUFClassPower()
 	B:GetModule("UnitFrames"):ToggleUFClassPower()
 end
 
+local function togglePortraits()
+	B:GetModule("UnitFrames"):TogglePortraits()
+end
+
 local function toggleAllAuras()
 	B:GetModule("UnitFrames"):ToggleAllAuras()
 end
@@ -1091,8 +1095,8 @@ G.TabList = {
 	L["Actionbar"],
 	L["Bags"],
 	NewTag..L["Unitframes"],
-	L["RaidFrame"],
-	NewTag..L["Nameplate"],
+	NewTag..L["RaidFrame"],
+	L["Nameplate"],
 	L["PlayerPlate"],
 	L["Auras"],
 	L["Raid Tools"],
@@ -1152,15 +1156,15 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{3, "Bags", "BankWidth", L["Bank Width"].."*", true, {10, 40, 1}, updateBagSize},
 	},
 	[3] = {
-		{1, "UFs", "Enable", NewTag..HeaderTag..L["Enable UFs"], nil, setupUnitFrame, nil, L["HideUFWarning"]},
+		{1, "UFs", "Enable", HeaderTag..L["Enable UFs"], nil, setupUnitFrame, nil, L["HideUFWarning"]},
 		{1, "UFs", "Arena", L["Arena Frame"], true},
 		{1, "UFs", "ShowAuras", L["ShowAuras"].."*", nil, setupUFAuras, toggleAllAuras},
 		{1, "UFs", "ClassPower", L["UFs ClassPower"].."*", true, setupClassPower, toggleUFClassPower},
-		{1, "UFs", "Portrait", L["UFs Portrait"]},
+		{1, "UFs", "Portrait", L["UFs Portrait"].."*", nil, nil, togglePortraits},
 		{1, "UFs", "CCName", L["ClassColor Name"].."*", true, nil, updateUFTextScale},
-		{1, "UFs", "PlayerAbsorb", NewTag..L["PlayerAbsorb"].."*", nil, nil, togglePlayerAbsorb, L["PlayerAbsorbTip"]},
+		{1, "UFs", "PlayerAbsorb", L["PlayerAbsorb"].."*", nil, nil, togglePlayerAbsorb, L["PlayerAbsorbTip"]},
 		{3, "UFs", "UFTextScale", L["UFTextScale"].."*", nil, {.8, 1.5, .05}, updateUFTextScale},
-		{4, "UFs", "HealthColor", L["HealthColor"].."*", true, {L["Default Dark"], L["ClassColorHP"], L["GradientHP"]}, updateUFTextScale},
+		{4, "UFs", "HealthColor", NewTag..L["HealthColor"].."*", true, {L["Default Dark"], L["ClassColorHP"], L["GradientHP"], L["ClearHealth"]}, updateUFTextScale},
 		{},--blank
 		{1, "UFs", "Castbars", HeaderTag..L["UFs Castbar"], nil, setupCastbar},
 		{1, "UFs", "LagString", L["Castbar LagString"].."*", true, nil, toggleCastBarLatency},
@@ -1204,7 +1208,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "UFs", "RaidClickSets", HeaderTag..L["Enable ClickSets"], nil, setupClickCast},
 		{1, "UFs", "AutoRes", HeaderTag..L["UFs AutoRes"], true},
 		{},--blank
-		{4, "UFs", "RaidHealthColor", L["HealthColor"].."*", nil, {L["Default Dark"], L["ClassColorHP"], L["GradientHP"]}, updateRaidTextScale},
+		{4, "UFs", "RaidHealthColor", NewTag..L["HealthColor"].."*", nil, {L["Default Dark"], L["ClassColorHP"], L["GradientHP"], L["ClearHealth"]}, updateRaidTextScale},
 		{4, "UFs", "RaidHPMode", L["HealthValueType"].."*", true, {DISABLE, L["ShowHealthPercent"], L["ShowHealthCurrent"], L["ShowHealthLoss"], L["ShowHealthLossPercent"]}, updateRaidTextScale, L["100PercentTip"]},
 		{1, "UFs", "ShowSolo", L["ShowSolo"].."*", nil, nil, updateAllHeaders, L["ShowSoloTip"]},
 		{1, "UFs", "SmartRaid", HeaderTag..L["SmartRaid"].."*", nil, nil, updateAllHeaders, L["SmartRaidTip"]},
@@ -1226,7 +1230,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Nameplate", "PlateAuras", HeaderTag..L["PlateAuras"].."*", nil, setupNameplateFilter, refreshNameplates},
 		{1, "Nameplate", "Desaturate", L["DesaturateIcon"].."*", nil, nil, refreshNameplates, L["DesaturateIconTip"]},
 		{1, "Nameplate", "DebuffColor", L["DebuffColor"].."*", true, nil, refreshNameplates, L["DebuffColorTip"]},
-		{4, "Nameplate", "DispellMode", NewTag..L["Dispellable"].."*", nil, {L["Filter"], L["Always"], DISABLE}, refreshNameplates, L["DispellableTip"]},
+		{4, "Nameplate", "DispellMode", L["Dispellable"].."*", nil, {L["Filter"], L["Always"], DISABLE}, refreshNameplates, L["DispellableTip"]},
 		{4, "Nameplate", "AuraFilter", L["NameplateAuraFilter"].."*", true, {L["BlackNWhite"], L["PlayerOnly"], L["IncludeCrowdControl"]}, refreshNameplates},
 		{3, "Nameplate", "maxAuras", L["Max Auras"].."*", false, {1, 20, 1}, refreshNameplates},
 		{3, "Nameplate", "AuraSize", L["Auras Size"].."*", true, {18, 40, 1}, refreshNameplates},
@@ -1237,7 +1241,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Nameplate", "HostileCC", L["Hostile CC"].."*", true},
 		{1, "Nameplate", "FriendlyThru", "|cffff0000"..L["Friendly ClickThru"].."*", nil, nil, updateClickThru, L["PlateClickThruTip"]},
 		{1, "Nameplate", "EnemyThru", "|cffff0000"..L["Enemy ClickThru"].."*", true, nil, updateClickThru, L["PlateClickThruTip"]},
-		{1, "Nameplate", "UnitTargeted", NewTag..L["Show TargetedBy"].."*", nil, nil, refreshPlateByEvents, L["TargetedByTip"]},
+		{1, "Nameplate", "UnitTargeted", L["Show TargetedBy"].."*", nil, nil, refreshPlateByEvents, L["TargetedByTip"]},
 		{1, "Nameplate", "CastTarget", L["PlateCastTarget"].."*", true, nil, nil, L["PlateCastTargetTip"]},
 		{1, "Nameplate", "InsideView", L["Nameplate InsideView"].."*", nil, nil, UpdatePlateCVars},
 		{1, "Nameplate", "Interruptor", L["ShowInterruptor"].."*", true},
@@ -1250,10 +1254,10 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Nameplate", "ColoredFocus", HeaderTag..L["ColoredFocus"].."*", true, nil, nil, L["ColoredFocusTip"]},
 		{5, "Nameplate", "TargetColor", L["TargetNP Color"].."*"},
 		{5, "Nameplate", "FocusColor", L["FocusNP Color"].."*", 2},
-		{1, "Nameplate", "ColorByDot", NewTag..HeaderTag..L["ColorByDot"].."*", nil, setupNameplateColorDots, nil, L["ColorByDotTip"]},
+		{1, "Nameplate", "ColorByDot", HeaderTag..L["ColorByDot"].."*", nil, setupNameplateColorDots, nil, L["ColorByDotTip"]},
 		{1, "Nameplate", "CastbarGlow", HeaderTag..L["PlateCastbarGlow"].."*", true, setupPlateCastbarGlow, nil, L["PlateCastbarGlowTip"]},
-		{1, "Nameplate", "ShowCustomUnits", NewTag..HeaderTag..L["ShowCustomUnits"].."*", nil, setupNameplateUnitFilter, updateCustomUnitList, L["CustomUnitsTip"]},
-		{1, "Nameplate", "ShowPowerUnits", NewTag..HeaderTag..L["ShowPowerUnits"].."*", true, setupNameplatePowerUnits, updatePowerUnitList, L["PowerUnitsTip"]},
+		{1, "Nameplate", "ShowCustomUnits", HeaderTag..L["ShowCustomUnits"].."*", nil, setupNameplateUnitFilter, updateCustomUnitList, L["CustomUnitsTip"]},
+		{1, "Nameplate", "ShowPowerUnits", HeaderTag..L["ShowPowerUnits"].."*", true, setupNameplatePowerUnits, updatePowerUnitList, L["PowerUnitsTip"]},
 		{},--blank
 		{1, "Nameplate", "TankMode", HeaderTag..L["Tank Mode"].."*", nil, nil, nil, L["TankModeTip"]},
 		{1, "Nameplate", "DPSRevertThreat", L["DPS Revert Threat"].."*", true, nil, nil, L["RevertThreatTip"]},
@@ -1736,7 +1740,7 @@ local function CreateContactBox(parent, text, url, index)
 end
 
 local donationList = {
-	["afdian"] = "33578473, normanvon, y368413, EK, msylgj, 夜丨灬清寒, akakai, reisen410, 其实你很帥, 萨菲尔, Antares, RyanZ, fldqw, Mario, 时光旧予, 食铁骑兵, 爱蕾丝的基总, 施然, 命运镇魂曲, 不可语上, Leo (En-布鲁), 忘川, 刘翰承, 悟空海外党, cncj, 暗月, 汪某人, 黑手, iraq120, 嗜血未冷, 我又不是妖怪, 养乐多, 无人知晓, 秋末旷夜-迪瑟洛克, Teo, 莉拉斯塔萨, 音尘绝, 刺王杀驾, 醉跌-凤凰之神, 灬麦加灬-阿古斯, 漂舟不系, 朵小熙, 山岸逢花, 乄阿财-帕奇维克, 乌鸦岭守墓饼-罗宁, 自在独踽踽-霜之哀伤, 御行宇航-碧玉矿洞, 末日伯爵-奥罗, 阿玛忆-白银之手, 零氪-罗宁, 粉色刘老头-黑曜石之锋, shadowlezi, 風雲再起-帕奇维克, congfeng, 东叫兽, solor, DC_Doraemon, 不明飞行物，Seraphinee-冰风岗，怜悯，小甜甜赵顶天-贫瘠之地，浅羽凝-湖畔镇以及部分未备注名字的用户。",
+	["afdian"] = "33578473, normanvon, y368413, EK, msylgj, 夜丨灬清寒, akakai, reisen410, 其实你很帥, 萨菲尔, Antares, RyanZ, fldqw, Mario, 时光旧予, 食铁骑兵, 爱蕾丝的基总, 施然, 命运镇魂曲, 不可语上, Leo(En-布鲁), 忘川, 刘翰承, 悟空海外党, cncj, 暗月, 汪某人, 黑手, iraq120, 嗜血未冷, 我又不是妖怪, 养乐多, 无人知晓, 秋末旷夜-迪瑟洛克, Teo, 莉拉斯塔萨, 音尘绝, 刺王杀驾, 醉跌-凤凰之神, 灬麦加灬-阿古斯, 漂舟不系, 朵小熙, 山岸逢花, 乄阿财-帕奇维克, 乌鸦岭守墓饼-罗宁, 自在独踽踽-霜之哀伤, 御行宇航-碧玉矿洞, 末日伯爵-奥罗, 阿玛忆-白银之手, 零氪-罗宁, 粉色刘老头-黑曜石之锋, shadowlezi, 風雲再起-帕奇维克, congfeng, 东叫兽, solor, DC_Doraemon, 不明飞行物，Seraphinee-冰风岗，怜悯，小甜甜赵顶天-贫瘠之地，浅羽凝-湖畔镇，十方-火妖，科比小迷弟-哈霍兰，信仰之业-霜之哀伤，喷大水丶-奥罗以及部分未备注名字的用户。",
 	["Patreon"] = "Quentin, Julian Neigefind, silenkin, imba Villain, Zeyu Zhu, Kon Floros.",
 }
 local function CreateDonationIcon(parent, texture, name, xOffset)

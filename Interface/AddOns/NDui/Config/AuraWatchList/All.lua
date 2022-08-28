@@ -88,6 +88,9 @@ local list = {
 		{AuraID = 355333, UnitID = "player"},	-- 回收的聚变增幅器
 		{AuraID = 357185, UnitID = "player"},	-- 忠诚的力量，低语威能碎片
 		{AuraID = 357773, UnitID = "player"},	-- 神圣使命，九武神长柄
+		{AuraID = 165485, UnitID = "player"},	-- 琪拉的注射器
+		{AuraID = 165534, UnitID = "player"},	-- 执行者的晕眩手雷
+		{AuraID = 230152, UnitID = "player"},	-- 命令之眼
 
 		-- {AuraID = 367241, UnitID = "player"},	-- 原初印记
 		{AuraID = 363522, UnitID = "player"},	-- 角斗士的永恒结界
@@ -279,6 +282,11 @@ local list = {
 		{AuraID = 350804, UnitID = "player"},	-- 集市，坍缩能量
 		{AuraID = 349999, UnitID = "player"},	-- 集市，心能引爆
 		{AuraID = 359019, UnitID = "player", Flash = true},	-- 集市，快拍提速
+		{AuraID = 173324, UnitID = "player", Flash = true},	-- 码头，锯齿蒺藜
+		{AuraID = 160681, UnitID = "player", Flash = true},	-- 车站，火力压制
+		{AuraID = 166676, UnitID = "player", Flash = true},	-- 车站，榴弹爆破
+		{AuraID = 291937, UnitID = "player", Flash = true},	-- 车间，垃圾掩体
+		{AuraID = 230087, UnitID = "player", Flash = true},	-- 卡上，振作
 		-- 团本
 		{AuraID = 342077, UnitID = "player"},	-- 回声定位，咆翼
 		{AuraID = 329725, UnitID = "player"},	-- 根除，毁灭者
@@ -305,6 +313,7 @@ local list = {
 		-- 大米
 		{AuraID = 226510, UnitID = "target"},	-- 血池回血
 		{AuraID = 343502, UnitID = "target"},	-- 鼓舞光环
+		{AuraID = 373724, UnitID = "target", Value = true},	-- S4，鲜血屏障
 		-- 5人本
 		{AuraID = 321754, UnitID = "target", Value = true},	-- 通灵战潮，冰缚之盾
 		{AuraID = 343470, UnitID = "target", Value = true},	-- 通灵战潮，碎骨之盾
@@ -345,6 +354,10 @@ local list = {
 		{AuraID = 347015, UnitID = "target", Flash = true},	-- 集市，强化防御
 		{AuraID = 355934, UnitID = "target", Value = true},	-- 集市，强光屏障
 		{AuraID = 349933, UnitID = "target", Flash = true, Value = true},	-- 集市，狂热鞭笞协议
+		{AuraID = 229495, UnitID = "target"},	-- 卡上，国王易伤
+		{AuraID = 227548, UnitID = "target", Value = true},	-- 卡上，烧蚀护盾
+		{AuraID = 227817, UnitID = "target", Value = true},	-- 卡下，圣女盾
+		{AuraID = 163689, UnitID = "target", Value = true, Flash = true},	-- 钢铁码头，血红之球
 		-- 团本
 		{AuraID = 345902, UnitID = "target"},	-- 破裂的联结，猎手
 		{AuraID = 334695, UnitID = "target"},	-- 动荡的能量，猎手
@@ -353,6 +366,7 @@ local list = {
 		{AuraID = 341250, UnitID = "target"},	-- 恐怖暴怒，泥拳
 		{AuraID = 329636, UnitID = "target", Flash = true},	-- 坚岩形态，干将
 		{AuraID = 329808, UnitID = "target", Flash = true},	-- 坚岩形态，干将
+		{AuraID = 350857, UnitID = "target", Flash = true},	-- 女妖斗篷，女王
 		{AuraID = 367573, UnitID = "target", Flash = true},	-- 源生壁垒，圣物匠
 		{AuraID = 368684, UnitID = "target", Value = true},	-- 回收，黑伦度斯
 		{AuraID = 361651, UnitID = "target", Value = true},	-- 虹吸屏障，道茜歌妮

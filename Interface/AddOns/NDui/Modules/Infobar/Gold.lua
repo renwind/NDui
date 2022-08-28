@@ -153,8 +153,12 @@ info.onMouseUp = function(self, btn)
 		NDuiADB["AutoSell"] = not NDuiADB["AutoSell"]
 		self:onEnter()
 	else
-		--if InCombatLockdown() then UIErrorsFrame:AddMessage(DB.InfoColor..ERR_NOT_IN_COMBAT) return end -- fix by LibShowUIPanel
-		ToggleCharacter("TokenFrame")
+		if NDuiADB["ShowSlots"] then
+			ToggleAllBags()
+		else
+			--if InCombatLockdown() then UIErrorsFrame:AddMessage(DB.InfoColor..ERR_NOT_IN_COMBAT) return end -- fix by LibShowUIPanel
+			ToggleCharacter("TokenFrame")
+		end
 	end
 end
 
@@ -211,7 +215,6 @@ info.onEnter = function(self)
 		end
 	end
 	GameTooltip:AddDoubleLine(" ", DB.LineString)
-	GameTooltip:AddDoubleLine(" ", DB.LeftButton..L["Currency Panel"].." ", 1,1,1, .6,.8,1)
 	GameTooltip:AddDoubleLine(" ", DB.RightButton..L["Switch Mode"].." ", 1,1,1, .6,.8,1)
 	GameTooltip:AddDoubleLine(" ", DB.ScrollButton..L["AutoSell Junk"]..": "..(NDuiADB["AutoSell"] and "|cff55ff55"..VIDEO_OPTIONS_ENABLED or "|cffff5555"..VIDEO_OPTIONS_DISABLED).." ", 1,1,1, .6,.8,1)
 	GameTooltip:AddDoubleLine(" ", "CTRL +"..DB.RightButton..L["Reset Gold"].." ", 1,1,1, .6,.8,1)
